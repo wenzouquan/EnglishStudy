@@ -1,0 +1,41 @@
+//导入React
+import React, {
+  Component
+} from 'react';
+
+//视图组件
+import {
+  TouchableHighlight,
+  StyleSheet,
+  Text,
+  View,
+  Button
+} from 'react-native';
+
+
+export function header(navigation) {
+  return {
+    title: 'wen190'
+  }
+};
+
+
+//视图组件
+class ComponentView extends Component {
+  render() {
+    console.log(this.props);
+    const {
+      state,
+      add
+    } = this.props;
+    return (
+      <View>
+          <View><Text>{state.count}</Text></View>
+          <Button title="点我，加1" onPress={(event)=> add(event)}/>
+        </View>
+    )
+  }
+}
+
+
+export default ComponentView;

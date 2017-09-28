@@ -1,0 +1,24 @@
+.contains {
+    flex: 1;
+}
+
+.VideoBox {
+    flex: 4;
+}
+
+.VideoBoxContent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0
+}
+
+.VideoTextBox {
+    flex: 6;
+}
+.VideoTextBoxItem{ padding: 20; background-color: #ffffff; margin:10; }
+.English{ color: #000000; font-size: 16; }
+.Chinese{ display: none }
+.Word{ border-top-color: #ddd;border-top-width:1; margin-top:10;padding-top:10 ;   }
+.Means{ margin-top: 10; }

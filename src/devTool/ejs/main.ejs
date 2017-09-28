@@ -1,0 +1,15 @@
+/*gulp makeEntry  里生成main.js，main的模板在devTool里*/
+import {
+	StackNavigator
+} from 'react-navigation';
+//主入口组件
+var entry = reactApp.params.entry;
+var navigates = {};
+navigates[entry] = {};
+<%  for ( var  i=0; i<components.length; i++) { %>  
+navigates['<%-components[i]['name'] %>'] = {
+	screen: require("<%-components[i]['path'] %>").default
+};
+<% }%>
+const app = StackNavigator(navigates);
+export default app;
