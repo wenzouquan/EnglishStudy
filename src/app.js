@@ -16,7 +16,7 @@ import {
 	View
 } from 'react-native';
 import SQLite from './db.js';
-// var jsonUrl = "./data/1.json";
+// var jsonUrl = "https://raw.githubusercontent.com/wenzouquan/EnglishStudy/master/src/data/1.json";
 // console.log(jsonUrl);
 // fetch(jsonUrl)
 //   .then((response) => response.json())

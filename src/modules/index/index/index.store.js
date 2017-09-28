@@ -112,17 +112,33 @@ let initialState = {
 
   },
 
-
+  getWordsJson:function(){
+   // var url = "./1.json";
+      var jsonUrl = "https://raw.githubusercontent.com/wenzouquan/EnglishStudy/master/src/data/"+this.state.params.title+".json";
+      fetch(jsonUrl)
+        .then((response) => response.json())
+        .then((responseJson) => {
+          //console.log(responseJson);
+         // this.state.wordsJson=responseJson;
+          reactApp.stores.IndexIndexIndex.setState({
+              wordsJson: responseJson
+           });
+          reactApp.stores.IndexIndexIndex.call("setWords");
+          //this.setWords();
+        })
+        .catch((error) => {
+          console.error(error);
+      });
+     // this.setWords();
+      //console.log(12);
+      //console.log(this.state.wordsJson);
+  },
 
   init: function() { //store,实例化会执行一次
-    console.log(this.state);
+    //console.log(this.state);
     if (this.state.params && this.state.params.movieUrl) {
       this.state.movieUrl = this.state.params.movieUrl;
-      var url = "./1.json";
-      this.state.wordsJson= require(url);
-      this.setWords();
-      //console.log(12);
-      console.log(this.state.wordsJson);
+      this.getWordsJson();
     }
   }
 };
