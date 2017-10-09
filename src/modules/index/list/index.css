@@ -1,8 +1,11 @@
 .contains {
     flex: 1; 
 }
-.MovieList{border-top-color: #ddd;border-top-width:1; margin-top:10; height: 40; padding: 4;justifyContent: center; background-color: #ffffff;}
+.MovieList{border-top-color: #ddd;border-top-width:1; margin-top:10; height: 60; padding: 4;justifyContent: center; background-color: #ffffff;}
 .Button{ bottom: 0; position: absolute; width: 100% }
 .rowBack{alignItems:center;flex:1;flexDirection:row;justifyContent:space-between}
 .backRightBtn{bottom: 0;position: absolute;top: 0;right: 0}
-.backTextWhite{ color: #ffffff; height: 40; margin-top:10; background-color: red; justifyContent: center; line-height: 40; width: 50; text-align: center;}
+.backTextWhite{ color: #ffffff; height: 60; margin-top:10; background-color: red; justifyContent: center; line-height: 60; width: 50; text-align: center;}
+.modalViewStyle{ background-color: #ffffff;flex:1; }
+.hudViewStyle{ top: 10%;}
+.Means{ margin-top: 5px; margin-bottom: 5px ; margin-left: 5px;}

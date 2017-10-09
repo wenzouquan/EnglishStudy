@@ -10,31 +10,46 @@ import {
   Text,
   View,
   Button,Modal,
-  ScrollView,ListView,
-  TouchableOpacity,NativeModules,TextInput
+  ListView,
+  TouchableOpacity,NativeModules,TextInput,WebView
 } from 'react-native';
 
 //import ImagePicker from 'react-native-image-crop-picker';
 import { SwipeListView,SwipeRow } from 'react-native-swipe-list-view';
 import styles from "./index.css.js";
-
-
+import codePush from 'react-native-code-push';
+//import SplashScreen from 'react-native-splash-screen';
 export function header(navigation) {
+   const {
+      navigate
+    } = navigation;
   return {
-    title: '视频列表'
+    title: '视频列表',
+    headerRight: <Button title="单词本"  onPress={()=> navigate('IndexNotebookIndex')} />,
   }
 };
 
 
+
+
 //视图组件
 class ComponentView extends Component {
+ componentDidMount() {
+        codePush.sync();
+        //SplashScreen.hide();
+  } 
+  webview: WebView
   render() {
-    console.log(this.props);
+    //console.log(this.props);
     const {
       state,
       playMovie,
       openPickerVideo,
+      setVideoUrl,
       deleteRow,
+      onRequestClose,
+      setVideoName,
+      saveVideo
     } = this.props;
     const {
       navigate
@@ -43,6 +58,7 @@ class ComponentView extends Component {
     return (
       <View style={{"flex": 1}}>
       <SwipeListView
+            enableEmptySections={true}
             dataSource={ds.cloneWithRows(state.movieList)}
             renderRow={ data => (
             <TouchableOpacity activeOpacity={1} onPress={()=> navigate('IndexIndexIndex', {
@@ -50,7 +66,7 @@ class ComponentView extends Component {
             title:data.name,
           })}  style={styles.MovieList} >
                 <View>
-                  <Text tyle={styles.MovieListText} >{data.name}</Text>
+                  <Text style={styles.MovieListText} >{data.name}</Text>
                 </View>
                 </TouchableOpacity>
             )}
@@ -62,10 +78,21 @@ class ComponentView extends Component {
               </View>
             )}
             rightOpenValue={-50}/>
-
-          <View style={styles.Button} >    
-           <Button  title="添加视频" onPress={()=> openPickerVideo()}/>
-          </View>
+            <Modal style={{"flex": 1}}
+                animationType='fade'            // 淡入淡出
+                transparent={true}              // 透明
+                visible={state.isModal}    // 根据isModal决定是否显示
+                onRequestClose={() => {onRequestClose()}}>
+                <View style={styles.modalViewStyle}>
+                    <View style={styles.hudViewStyle}>
+                       <TextInput
+                          style={{height: 40}}
+                          placeholder="输入视频名称"
+                          onChangeText={(text) => setVideoName({text})}/>
+                         <Button  title="保存视频" onPress={()=> saveVideo()}/>
+                    </View>
+                </View>
+            </Modal>
       </View>
     )
   }

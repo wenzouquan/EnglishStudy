@@ -1,8 +1,11 @@
 import {
-NativeModules
+NativeModules,CameraRoll
 } from 'react-native';
-import SQLiteStorage from 'react-native-sqlite-storage';
-SQLiteStorage.DEBUG(true);
+
+//import ImagePicker from 'react-native-image-crop-picker';
+var ImagePicker2 = require('react-native-image-picker');
+
+
 let initialState = {
   state: {
     count: 0,
@@ -13,13 +16,42 @@ let initialState = {
   playMovie: function(action) {
     console.log(action);
   },
+
+  getVideos:function(){
+    var fetchParams = {
+      first: 6,
+      groupTypes: 'All',
+      assetType: 'Videos'
+    }
+    var promise = CameraRoll.getPhotos(fetchParams)
+          promise.then(function(data){
+            console.log(data);
+                var edges = data.edges;
+                var photos = [];
+                for (var i in edges) {
+                    var filename = edges[i].node.image.filename.split(".");
+                    photos.push({
+                      url:edges[i].node.image.uri,
+                      name:filename[0],
+                    });
+                }
+                reactApp.stores.IndexListIndex.setState({
+                  movieList: photos
+                });
+          },function(err){
+          alert('获取照片失败！');
+    });
+  },
   init:function(){
-     this.setMovieList();
+     var Db = reactApp.getDb();
+     Db.createTable();
+     //this.setMovieList();
+     this.getVideos();
   },
 
   setMovieList:function(){
     var Db = reactApp.getDb();
-     Db.success((data)=>{
+     Db.setTableName("Collection").success((data)=>{
         reactApp.stores.IndexListIndex.setState({
           movieList: data
         });
@@ -32,35 +64,97 @@ let initialState = {
       })
   },
    onRequestClose:function() {
-      reactApp.stores.IndexListIndex.setState({
+      
+  },
+  hideModal:function(){
+    reactApp.stores.IndexListIndex.setState({
           isModal:false
       });
   },
-  setVideoName:function(_this){
-    this.chooseVideo.name = _this.event;
+  saveVideo:function(){
+    if(this.state.chooseVideo.name && this.state.chooseVideo.name !=""){
+      var Db = reactApp.getDb();
+      Db.success((data)=>{
+         this.setMovieList();
+         this.hideModal();
+      }).add({name:this.state.chooseVideo.name,url:this.state.chooseVideo.path});
+    }else{
+      alert('请输入视频名称');
+    }
+    
   },
+  setVideoName:function(_this){
+    this.state.chooseVideo.name = _this.event.text;
+  },
+  setVideoUrl:function(_this){
+       var path =_this.event;
+       this.state.chooseVideo.path = path;   
+       this.state.chooseVideo.name = "怦然心动"; 
+       this.saveVideo();   
+  },
+
   deleteRow:function(_this){
     var id =_this.event;
     var Db = reactApp.getDb();
-    Db.success((data)=>{
+    Db.setTableName("Collection").success((data)=>{
        this.setMovieList();
      }).where({id:id}).delete();
   },
   openPickerVideo:function(){
-    var ImagePicker = NativeModules.ImageCropPicker;
-    ImagePicker.openPicker({
-      //mediaType: "video",
-     // width: 300,
-     // height: 400
-    }).then(images => {
-      var path = images.path;
-      this.chooseVideo = images;
-      var Db = reactApp.getDb();
-      Db.success((data)=>{
-         this.setMovieList();
-      }).add({name:images.filename,url:images.path});
-      //this.showModal();
+    //ImagePickerIOS.canRecordVideos(() => alert('能获取视频'))
+    
+    //ImagePickerIOS.canUseCamera(() => alert('能获取图片'))
+     // openSelectDialog(config, successCallback, errorCallback);
+    // ImagePickerIOS.openSelectDialog({ 
+    //   showImages: true,
+    //   showVideos: true
+    //  }, (data) => {
+    //   console.log(data);
+    //   //this.setState({ image: imageUri });
+    // }, error => console.log(error));
+    //this.showModal();
+    //var path =e.event;
+    //this.state.chooseVideo.path = path;
+    //this.state.chooseVideo.isModal = true;
+    //console.log(e.event);
+    //alert(url);
+   var options = {
+     title: 'Select Avatar',
+      // customButtons: [
+      //   {name: 'fb', title: 'Choose Photo from Facebook'},
+      // ],
+      takePhotoButtonTitle:null,
+      noData:true,
+      mediaType:'video',
+      videoQuality:'high',
+      ompressVideo:false,
+      storageOptions: {
+        skipBackup: true,
+        path: 'images'
+      }
+    };
+    ImagePicker2.showImagePicker(options, (response) => {
+        this.state.chooseVideo.path = response.origURL;
+        this.showModal();
+        // console.log('Response = ', response);
     });
+
+    // ImagePicker.openPicker({
+    // //  mediaType: "video",
+    // compressVideoPreset:false,
+    //   compressVideo:false
+    //  // width: 300,
+    //  // height: 400
+    // }).then(images => {
+    //   console.log(images);
+    //   // var path = images.path;
+    //   // reactApp.stores.IndexListIndex.setState({
+    //   //     chooseVideo:images
+    //   // });
+    //   // this.showModal();
+    // }).catch((error) => {
+    //     console.log(error);
+    //   });
   }
 
 

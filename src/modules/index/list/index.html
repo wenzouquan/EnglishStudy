@@ -1,0 +1,48 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=320, user-scalable=no">
+    <script type="text/javascript"  src="jquery-1.11.3.min.js"></script>
+  </head>
+<body>
+  <input type="file" placeholder="选择视频" id="selectFile" > 
+</body> 
+  <script type="text/javascript">
+    //$("#selectFile").on()
+    $('#selectFile').change(function(event){
+      var file = this.files[0];
+      console.log(  this.files[0]);
+      console.log(event);
+      if (window.FileReader) {    
+            var reader = new FileReader();    
+            reader.readAsDataURL(file);    
+            //监听文件读取结束后事件    
+          reader.onloadend = function (e) {
+            console.log(e);
+                // $(".img").attr("src",e.target.result);    //e.target.result就是最后的路径地址
+            };    
+       } 
+       // alert($(this).val());
+        //var files = e.currentTarget.files;
+        //window.postMessage($(this).val());
+       // alert(JSON.stringify(files));
+    });
+   // function selectFile(_this){
+   //     window.postMessage(_this.vaule);
+   // }
+    // document.getElementById("selectFile").onchange=function(event){
+    //     //var files = e.currentTarget.files[0];
+    //     window.postMessage(this.vaule);
+    //     //var files= document.getElementById("selectFile").files; 
+    //    // window.postMessage(JSON.stringify(files));
+    // }
+    // file.on('change', function( e ){
+    //     alert(12);
+    //     window.postMessage("test");
+    //     //e.currentTarget.files 是一个数组，如果支持多个文件，则需要遍历
+    //     //var files = e.currentTarget.files[0];
+    //     //window.postMessage(JSON.stringify(files));
+    // });         
+</script>
+</html>

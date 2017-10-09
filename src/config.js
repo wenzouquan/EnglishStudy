@@ -3,6 +3,6 @@ let config = {
 	userVersions: '2.4',
 	debug: true,
 	entry: 'IndexListIndex', //主入口组件名
-	projectName: 'EnglishStudyApp' //项目名
+	projectName: 'EnglishStudy' //项目名
 };
 export default config;

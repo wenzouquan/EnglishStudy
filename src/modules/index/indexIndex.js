@@ -43,6 +43,23 @@ function mapDispatchToProps(dispatch) {
 			type: 'setVideo',
 			event: video
 		}),
+		notebook:(word) => dispatch({
+			type: 'notebook',
+			event: word
+		}),
+		savePlayTime:() => dispatch({
+			type: 'savePlayTime'
+		}),
+		onSeek:(data) => dispatch({
+			type: 'onSeek',
+			event: data
+		}),
+		onScreenTouch:(data) => dispatch({
+			type: 'onScreenTouch',
+			event: data
+		}),
+		
+		
 	}
 }
 let componentName = "index/index/index"; //组件名，不能重复,建议使用路径

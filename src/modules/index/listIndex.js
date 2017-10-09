@@ -9,12 +9,31 @@ function mapDispatchToProps(dispatch) {
 			event: _this
 		}),
 		openPickerVideo:()=>dispatch({
-			type: 'openPickerVideo'
+			type: 'openPickerVideo',
+		}),
+		setVideoUrl:(msg)=>dispatch({
+			type: 'setVideoUrl',
+			event: msg
 		}),
 		deleteRow:(_this)=>dispatch({
 			type: 'deleteRow',
 			event: _this
-		})
+		}),
+		onRequestClose:()=>dispatch({
+			type: 'onRequestClose'
+		}),
+		setVideoName:(_this)=>dispatch({
+			type: 'setVideoName',
+			event: _this
+		}),
+		saveVideo:()=>dispatch({
+			type: 'saveVideo'
+		}),
+		showModal:()=>dispatch({
+			type: 'showModal'
+		}),
+		
+		
 		
 
 	}

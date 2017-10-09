@@ -13,33 +13,61 @@ import {
 	AppRegistry,
 	StyleSheet,
 	Text,
-	View
+	View,AsyncStorage
 } from 'react-native';
 import SQLite from './db.js';
-// var jsonUrl = "https://raw.githubusercontent.com/wenzouquan/EnglishStudy/master/src/data/1.json";
-// console.log(jsonUrl);
-// fetch(jsonUrl)
-//   .then((response) => response.json())
-//   .then((responseJson) => {
-//     console.log(responseJson);
-//   })
-//   .catch((error) => {
-//     console.error(error);
-//   });
+import tools from './tool.js';
+//console.log(data);
+import Storage from 'react-native-storage';
 
-// fetch(jsonUrl)
-//       .then((response) => response.json())
-//       .then((responseJson) => {
-//         console.log(responseJson.movies) ;
-//       })
-//       .catch((error) => {
-//         console.error(error);
-//       });
+
+
+
+// load
+// storage.load({
+// 	key: 'loginState2',
+	
+// 	// autoSync(default true) means if data not found or expired,
+// 	// then invoke the corresponding sync method
+// 	autoSync: true,
+	
+// 	// syncInBackground(default true) means if data expired,
+// 	// return the outdated data first while invoke the sync method.
+// 	// It can be set to false to always return data provided by sync method when expired.(Of course it's slower)
+// 	syncInBackground: true,
+	
+// 	// you can pass extra params to sync method
+// 	// see sync example below for example
+// 	syncParams: {
+// 	  extraFetchOptions: {
+// 	    // blahblah
+// 	  },
+// 	  someFlag: true,
+// 	},
+// }).then(ret => {
+// 	// found data go to then()
+// 	console.log(ret);
+// }).catch(err => {
+// 	// any exception including data not found 
+// 	// goes to catch()
+// 	console.warn(err.message);
+// 	switch (err.name) {
+// 	    case 'NotFoundError':
+// 	        // TODO;
+// 	        break;
+//         case 'ExpiredError':
+//             // TODO
+//             break;
+// 	}
+// })
+
+
 
 class App {
 	constructor(config = {}) {
 		this.stores = {}; //所有store
 		this.components = {}; //所有路由模块
+		this.tools=new tools();
 		this.params = {
 			versions: '6.7',
 			userVersions: '2.4',
@@ -56,9 +84,64 @@ class App {
 			this.db  = new SQLite();
 			return  this.db ;
 		}
-		
-		
 	}
+	getStorage(){
+		if(!this.storage){
+			var storage = new Storage({
+				// maximum capacity, default 1000 
+				size: 1000,
+
+				// Use AsyncStorage for RN, or window.localStorage for web.
+				// If not set, data would be lost after reload.
+				storageBackend: AsyncStorage,
+				
+				// expire time, default 1 day(1000 * 3600 * 24 milliseconds).
+				// can be null, which means never expire.
+				defaultExpires: 1000 * 3600 * 24,
+				
+				// cache data in the memory. default is true.
+				enableCache: true,
+				
+				// if data was not found in storage or expired,
+				// the corresponding sync method will be invoked and return 
+				// the latest data.
+				sync : {
+					// we'll talk about the details later.
+				}
+			});
+			 this.storage = storage;
+		}
+		this.storage.get=(key,suc,fail)=>{
+				this.storage.load({
+				     key: key,
+				      
+				     // autoSync(default true) means if data not found or expired,
+				     // then invoke the corresponding sync method
+				     autoSync: true,
+				      
+				     // syncInBackground(default true) means if data expired,
+				     // return the outdated data first while invoke the sync method.
+				     // It can be set to false to always return data provided by sync method when expired.(Of course it's slower)
+				     syncInBackground: true,
+				      
+				     // you can pass extra params to sync method
+				     // see sync example below for example
+				     syncParams: {
+				       extraFetchOptions: {
+				         // blahblah
+				       },
+				       someFlag: true,
+				     },
+				    }).then(ret => {
+				    suc?suc(ret):'';
+				    
+				    }).catch(err => {
+				    fail?fail(err):'';
+				})
+		}
+		return this.storage;
+	}
+
 	getStore(path, props, reducer) { //redux 的 store ，用于数据管理
 		let storeName = this.ucfirst(path);
 		let store;
@@ -173,8 +256,6 @@ class App {
 				return false;
 			}
 			render() {
-				// console.log(this.props);
-				// //this.props.match.params = this.props.arg;
 				var navigation = this.props.navigation;
 				const store = _this.getStore(componentName, this.props, reducer);
 				return (<Provider store={store}><C navigation={navigation}/></Provider>);
@@ -183,10 +264,12 @@ class App {
 		}
 		return newComponent;
 	}
+
 	run() {
 		let reactProject = require("./main").default; //导入所有的组件
 		AppRegistry.registerComponent(this.params.projectName, () => reactProject);
 	}
+
 
 }
 export default App;

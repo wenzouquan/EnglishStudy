@@ -1,7 +1,7 @@
 import React from 'react';
 import SQLiteStorage from 'react-native-sqlite-storage';
 
-SQLiteStorage.DEBUG(true);
+SQLiteStorage.DEBUG(false);
 var database_name = "xifan.db";
 var database_version = "1.0";
 var database_displayname = "MySQLite";
@@ -31,13 +31,50 @@ class SQLite {
 
     }
 
+
+
+    setTableName(tableName){
+        this.tableName=tableName;
+        return this;
+    }
+
     createTable(){
+        this.createTableNoteBook();
+        this.createTableCollection();
+    }
+    createTableNoteBook(){
+        if (!this.db) {
+            this.open();
+        }
+        //单词表  
+        this.db.transaction((tx)=> {
+            tx.executeSql('CREATE TABLE IF NOT EXISTS notebook (' +
+                'id INTEGER PRIMARY KEY NOT NULL,' +
+                'word VARCHAR,' +
+                'movieUrl VARCHAR,' +
+                'movieName VARCHAR,' +
+                'startTime VARCHAR,' +
+                'wordStart VARCHAR'
+                + ');'
+                , [], ()=> {
+                    this._successCB('executeSql');
+                }, (err)=> {
+                    this._errorCB('executeSql', err);
+                });
+        }, (err)=> {
+            this._errorCB('transaction', err);
+        }, ()=> {
+            this._successCB('transaction');
+        })
+    }
+
+    createTableCollection(){
         if (!this.db) {
             this.open();
         }
         //创建收藏表
         this.db.transaction((tx)=> {
-            tx.executeSql('CREATE TABLE IF NOT EXISTS ' + this.tableName + '(' +
+            tx.executeSql('CREATE TABLE IF NOT EXISTS  Collection (' +
                 'id INTEGER PRIMARY KEY NOT NULL,' +
                 'name VARCHAR,' +
                 'actor VARCHAR,' +

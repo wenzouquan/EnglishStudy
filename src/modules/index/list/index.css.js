@@ -8,7 +8,7 @@ module.exports = StyleSheet.create({
         "borderTopColor": "#ddd",
         "borderTopWidth": 1,
         "marginTop": 10,
-        "height": 40,
+        "height": 60,
         "paddingTop": 4,
         "paddingBottom": 4,
         "paddingRight": 4,
@@ -35,12 +35,24 @@ module.exports = StyleSheet.create({
     },
     "backTextWhite": {
         "color": "#ffffff",
-        "height": 40,
+        "height": 60,
         "marginTop": 10,
         "backgroundColor": "red",
         "justifyContent": "center",
-        "lineHeight": 40,
+        "lineHeight": 60,
         "width": 50,
         "textAlign": "center"
+    },
+    "modalViewStyle": {
+        "backgroundColor": "#ffffff",
+        "flex": 1
+    },
+    "hudViewStyle": {
+        "top": "10%"
+    },
+    "Means": {
+        "marginTop": 5,
+        "marginBottom": 5,
+        "marginLeft": 5
     }
 });

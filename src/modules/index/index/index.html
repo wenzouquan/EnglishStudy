@@ -1,0 +1,31 @@
+ <!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=320, user-scalable=no">
+    <script type="text/javascript">
+    window.document.addEventListener('message', function (e) {
+          const message = JSON.parse(e.data);
+          //document.getElementById("p1").innerHTML="New text!";
+         // document.getElementById("mp3div2").innerHTML(message.url);
+          //alert(12);
+          if (message.command === 'playMp3') {
+          //  alert(message.url);
+             // const property = info(message.payload.property)
+              // 向Native发消息通知结果
+              loadAudio(message.url);
+          }
+
+      })
+                
+    function loadAudio(src) {
+        var audio = new Audio(src);
+        audio.src = src;
+        audio.play();
+    }
+
+    </script>
+  </head>
+<body>
+</body> 
+  </html>

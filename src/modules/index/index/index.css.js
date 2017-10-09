@@ -14,6 +14,9 @@ module.exports = StyleSheet.create({
         "bottom": 0,
         "right": 0
     },
+    "ScrollViewBox": {
+        "paddingVertical": 20
+    },
     "VideoTextBox": {
         "flex": 6
     },
@@ -26,10 +29,10 @@ module.exports = StyleSheet.create({
         "marginTop": 10,
         "marginBottom": 10,
         "marginRight": 10,
-        "marginLeft": 10
+        "marginLeft": 10,
+        "width": "100%"
     },
     "English": {
-        "color": "#000000",
         "fontSize": 16
     },
     "Chinese": {
@@ -43,5 +46,17 @@ module.exports = StyleSheet.create({
     },
     "Means": {
         "marginTop": 10
+    },
+    "WebView": {
+        "display": "none",
+        "marginTop": 0,
+        "marginBottom": 0,
+        "marginRight": 0,
+        "marginLeft": 0,
+        "height": 0,
+        "backgroundColor": "#ffffff"
+    },
+    "curEnglish": {
+        "color": "green"
     }
 });

@@ -14,6 +14,10 @@ navigates['IndexIndexIndex'] = {
 navigates['IndexListIndex'] = {
 	screen: require("./modules/index/listIndex.js").default
 };
+  
+navigates['IndexNotebookIndex'] = {
+	screen: require("./modules/index/notebookIndex.js").default
+};
 
 const app = StackNavigator(navigates);
 export default app;
